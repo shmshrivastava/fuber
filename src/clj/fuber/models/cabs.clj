@@ -1,12 +1,14 @@
 (ns fuber.models.cabs
   (:require [fuber.models.core :as db]))
 
+(def Cabs (db/->model "cabs"))
+
 (defn get-cabs
   "Get all cabs"
   []
-  (db/read-data-from-file "cabs.edn"))
+  (db/get-docs Cabs {}))
 
 (defn get-cab
   "Get cab details for a cab id"
   [id]
-  (some #(= id (:id %)) (get-cabs)))
+  (db/get-doc Cabs id))
