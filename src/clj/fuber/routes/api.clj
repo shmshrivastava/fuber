@@ -3,6 +3,7 @@
    [ring.util.http-response :refer [ok created]]
    [reitit.swagger :as swagger]
    [reitit.coercion.schema]
+   [fuber.models.cabs :as cabs]
    [schema.core :as s]))
 
 (defn api-routes []
@@ -17,4 +18,4 @@
     ["/cabs"
      ["" {:get {:coercion reitit.coercion.schema/coercion
                 :summary "Get a list of all cabs"
-                :handler (fn [_] (ok [1]))}}]]]])
+                :handler (fn [_] (ok (cabs/get-cabs)))}}]]]])
