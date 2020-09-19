@@ -1,8 +1,8 @@
 {1 {:id 1
-  :type "pink"
-  :location {:lat 0
-             :long 0}}
+    :type "pink"
+    :lat 0
+    :long 0}
 2 {:id 2
- :type "standard"
- :location {:lat 2
-            :long 3}}}
+   :type "standard"
+   :lat 2
+   :long 3}}
