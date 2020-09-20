@@ -41,4 +41,4 @@
                        (fn [{{{:keys [ride-id]} :path
                               {:keys [lat long]} :body}
                              :parameters}]
-                         (ok rides/stop-ride ride-id lat long))}}]]]]])
+                         (ok (rides/stop-ride ride-id lat long)))}}]]]]])

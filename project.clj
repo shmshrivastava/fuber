@@ -68,6 +68,7 @@
                   :injections [(require 'pjstadig.humane-test-output)
                                (pjstadig.humane-test-output/activate!)]}
    :project/test {:jvm-opts ["-Dconf=test-config.edn" ]
+                  :dependencies [[midje/midje "1.9.9"]]
                   :resource-paths ["env/test/resources"] }
    :profiles/dev {}
    :profiles/test {}})

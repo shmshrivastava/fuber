@@ -28,8 +28,10 @@
 
 (defn unassign-cab
   "Make the cab available"
-  [cab-id]
-  (db/update-doc Cabs cab-id {:status "available"}))
+  ([cab-id]
+   (db/update-doc Cabs cab-id {:status "available"}))
+  ([cab-id lat long]
+   (db/update-doc Cabs cab-id {:status "available" :lat lat :long long})))
 
 (defn assign-nearest-cab
   "Get a nearest cab from provided lat long"

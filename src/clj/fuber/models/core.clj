@@ -10,7 +10,7 @@
 (defn write-data-to-file
   "Write a data object to a file"
   [filename data]
-  (with-open [w (writer (get-file-path filename))]
+  (with-open [w (writer (io/resource (get-file-path filename)))]
     (.write w (pr-str data))))
 
 (defn read-data-from-file
@@ -21,7 +21,7 @@
 (defn gen-id
   "Returns a unique identifier for a db entry"
   []
-  (time/now-ms))
+  (str (time/now-ms)))
 
 (defn add-id
   "Adds the id key to a map with value as a unique id"
@@ -47,7 +47,8 @@
    [model data]
    (let [data (add-id data)]
      (->> (assoc (read-data-from-file model-name) (:id data) data)
-          (write-data-to-file model-name))))
+          (write-data-to-file model-name))
+     data))
   (get-doc
    [model id]
    (-> model-name
@@ -62,7 +63,7 @@
     model-name
     (-> model-name
         (read-data-from-file)
-        (update id merge (dissoc :id update-map))))
+        (update id merge (dissoc update-map :id))))
    (-> model-name
        (read-data-from-file)
        (get id))))

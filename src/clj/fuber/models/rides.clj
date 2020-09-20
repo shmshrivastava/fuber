@@ -18,7 +18,7 @@
 (defn compute-fare
   "Compute fare from distance, duration in ms and cab-type"
   [distance duration cab-type]
-  (+ (/ duration 1000)
+  (+ (/ duration 60000)
      (* 2 distance)
      (if (= cab-type "pink") 5 0)))
 
