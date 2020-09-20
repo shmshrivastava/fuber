@@ -1,6 +1,7 @@
 (ns fuber.models.core
   (:require [clojure.java.io :refer [writer] :as io]
-            [clojure.tools.logging :as log]))
+            [clojure.tools.logging :as log]
+            [fuber.utils.time :as time]))
 
 (def ^:const folder-path "temp/")
 
@@ -20,7 +21,7 @@
 (defn gen-id
   "Returns a unique identifier for a db entry"
   []
-  (.getTime (new java.util.Date)))
+  (time/now-ms))
 
 (defn add-id
   "Adds the id key to a map with value as a unique id"
@@ -61,4 +62,7 @@
     model-name
     (-> model-name
         (read-data-from-file)
-        (update id merge (dissoc :id update-map))))))
+        (update id merge (dissoc :id update-map))))
+   (-> model-name
+       (read-data-from-file)
+       (get id))))

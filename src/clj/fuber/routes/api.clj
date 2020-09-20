@@ -4,6 +4,7 @@
    [reitit.swagger :as swagger]
    [reitit.coercion.schema]
    [fuber.models.cabs :as cabs]
+   [fuber.rides-manager :as rides]
    [schema.core :as s]))
 
 (defn api-routes []
@@ -15,16 +16,29 @@
              {:title "Fuber APIs"}}
             :handler (swagger/create-swagger-handler)}}]]
    ["/api"
-    ["/cabs"
-     ["" {:get {:coercion reitit.coercion.schema/coercion
-                :summary "Get a list of all cabs"
-                :handler (fn [_] (ok (cabs/get-cabs)))}}]
-     ["/nearest" {:get {:coercion reitit.coercion.schema/coercion
-                        :summary "Get a nearest cab from a lat long"
-                        :parameters {:query {:lat s/Str :long s/Str}}
+    ["/cabs" {:get {:coercion reitit.coercion.schema/coercion
+                    :summary "Get a list of all cabs"
+                    :handler (fn [_] (ok (cabs/get-cabs)))}}]
+    ["/rides"
+     ["/assign" {:post {:coercion reitit.coercion.schema/coercion
+                        :summary "Assign a nearest cab from a lat long"
+                        :parameters {:body {:lat s/Num 
+                                            :long s/Num 
+                                            (s/optional-key :user-id) s/Str
+                                            (s/optional-key :cab-type) (s/enum "standard" "pink")}}
                         :handler
-                        (fn [{{{:keys [lat long]} :query}
+                        (fn [{{{:keys [lat long user-id cab-type]} :body}
                               :parameters}]
-                          (if-let [cab (cabs/get-nearest-cab lat long)]
-                            (ok cab)
-                            (no-content)))}}]]]])
+                          (if-let [ride (rides/assign-ride user-id lat long cab-type)]
+                            (ok ride)
+                            (no-content)))}}]
+     ["/:ride-id"
+      ["/stop" {:post {:coercion reitit.coercion.schema/coercion
+                       :summary "Stop a ride"
+                       :parameters {:path {:ride-id s/Str}
+                                    :body {:lat s/Num :long s/Num}}
+                       :handler
+                       (fn [{{{:keys [ride-id]} :path
+                              {:keys [lat long]} :body}
+                             :parameters}]
+                         (ok rides/stop-ride ride-id lat long))}}]]]]])

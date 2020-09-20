@@ -1,5 +1,6 @@
 (ns fuber.models.cabs
-  (:require [fuber.models.core :as db]))
+  (:require [fuber.models.core :as db]
+            [fuber.utils.distance :as dis]))
 
 (def Cabs (db/->model "cabs"))
 
@@ -18,9 +19,7 @@
 (defn get-cab-distance
   "Get distance of a cab from given lat and long. Uses Pythagoras' theorem for now."
   [{:keys [lat long] :as cab} cur-lat cur-long]
-  (let [lat-diff (- lat cur-lat)
-        long-diff (- long cur-long)]
-    (Math/sqrt (+ (* lat-diff lat-diff) (* long-diff long-diff)))))
+  (dis/get-distance lat long cur-lat cur-long))
 
 (defn assign-cab
   "Assign a cab"
@@ -32,10 +31,12 @@
   [cab-id]
   (db/update-doc Cabs cab-id {:status "available"}))
 
-(defn get-nearest-cab
+(defn assign-nearest-cab
   "Get a nearest cab from provided lat long"
   [lat long cab-type]
   (->> (get-cabs (merge {:status "available"} (when cab-type {:type cab-type})))
        (mapv #(assoc % :distance (get-cab-distance % lat long)))
        (sort-by :distance)
-       (first)))
+       (first)
+       :id
+       (assign-cab)))
