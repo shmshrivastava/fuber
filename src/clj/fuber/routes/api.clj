@@ -18,7 +18,15 @@
    ["/api"
     ["/cabs" {:get {:coercion reitit.coercion.schema/coercion
                     :summary "Get a list of all cabs"
-                    :handler (fn [_] (ok (cabs/get-cabs)))}}]
+                    :handler (fn [_] (ok (cabs/get-cabs)))}
+              :post {:coercion reitit.coercion.schema/coercion
+                     :summary "Add a new cab"
+                     :parameters {:body {:lat s/Num
+                                         :long s/Num
+                                         (s/optional-key :cab) (s/enum "standard" "pink")
+                                         (s/optional-key :status) (s/enum "available")}}
+                     :handler (fn [{{cab :body} :parameters}]
+                                (created (cabs/add-cab cab)))}}]
     ["/rides"
      ["/assign" {:post {:coercion reitit.coercion.schema/coercion
                         :summary "Assign a nearest cab from a lat long"

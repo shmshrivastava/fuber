@@ -11,6 +11,10 @@
   ([query-map]
    (db/get-docs Cabs query-map)))
 
+(defn add-cab
+  [cab]
+  (db/create-doc Cabs cab))
+
 (defn get-cab
   "Get cab details for a cab id"
   [id]
@@ -24,7 +28,7 @@
 (defn assign-cab
   "Assign a cab"
   [cab-id]
-  (db/update-doc Cabs cab-id {:status "assigned"}))
+  (when cab-id (db/update-doc Cabs cab-id {:status "assigned"})))
 
 (defn unassign-cab
   "Make the cab available"

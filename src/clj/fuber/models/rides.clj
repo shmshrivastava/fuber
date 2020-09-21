@@ -22,19 +22,27 @@
      (* 2 distance)
      (if (= cab-type "pink") 5 0)))
 
+(defn get-ride
+  [ride-id]
+  (db/get-doc Rides ride-id))
+
+(defn update-ride
+  [ride-id update-map]
+  (db/update-doc Rides ride-id update-map))
+
 (defn stop-ride
   "Stop ride and calculate fare"
   [ride-id lat long]
-  (let [ride (db/get-doc Rides ride-id)
-        distance (dis/get-distance lat long
-                                   (-> ride :start-pos :lat)
-                                   (-> ride :start-pos :long))
-        current-time (time/now-ms)
-        duration (- current-time (:start-time ride))
-        fare (compute-fare distance duration (:cab-type ride))]
-    (db/update-doc Rides ride-id
+  (when-let [ride (get-ride ride-id)]
+    (let [distance (dis/get-distance lat long
+                                     (-> ride :start-pos :lat)
+                                     (-> ride :start-pos :long))
+          current-time (time/now-ms)
+          duration (- current-time (:start-time ride))
+          fare (compute-fare distance duration (:cab-type ride))]
+      (update-ride ride-id
                    {:distance distance
                     :duration duration
                     :end-time current-time
                     :end-pos {:lat lat :long long}
-                    :fare fare})))
+                    :fare fare}))))

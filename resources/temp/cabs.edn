@@ -1,1 +1,1 @@
-{1 {:id 1, :type "pink", :lat 9, :long 0, :status "available"}, 2 {:id 2, :type "standard", :lat 2, :long 3, :status "available"}}
+{1 {:id 1, :type "pink", :lat 9, :long 0, :status "available"}, 2 {:id 2, :type "standard", :lat 2, :long 3, :status "available"}, nil {:status "assigned"}}
