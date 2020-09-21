@@ -1,1 +1,1 @@
-{1 {:id 1, :type "pink", :lat 9, :long 0, :status "available"}, 2 {:id 2, :type "standard", :lat 2, :long 3, :status "available"}, nil {:status "assigned"}}
+{"1600695262584" {:lat 0, :long 0, :cab "standard", :status "available", :id "1600695262584"}, "1600695552436" {:lat 1, :long 0, :cab "standard", :status "available", :id "1600695552436"}}

@@ -26,7 +26,14 @@
                                          (s/optional-key :cab) (s/enum "standard" "pink")
                                          (s/optional-key :status) (s/enum "available")}}
                      :handler (fn [{{cab :body} :parameters}]
-                                (created (cabs/add-cab cab)))}}]
+                                (let [cab (cabs/add-cab cab)]
+                                  (created (str "/api/cabs/" (:id cab)) cab)))}}]
+    ["/cabs/:cab-id" {:get {:coercion reitit.coercion.schema/coercion
+                            :summary "Get a cab details"
+                            :parameters {:path {:cab-id s/Str}}
+                            :handler (fn [{{{:keys [cab-id]} :path}
+                                           :parameters}] 
+                                       (ok (cabs/get-cab cab-id)))}}]
     ["/rides"
      ["/assign" {:post {:coercion reitit.coercion.schema/coercion
                         :summary "Assign a nearest cab from a lat long"
