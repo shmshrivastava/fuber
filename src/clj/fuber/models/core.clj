@@ -31,7 +31,7 @@
 (defn matches-query?
   "returns true if all keys of query have same values in data as in query"
   [data query]
-  (reduce #(and %1 (= (get data %2) (get query %2))) true query))
+  (reduce #(and %1 (= (get data %2) (get query %2))) true (keys query)))
 
 (defprotocol model-methods
   "A protocol for models abstraction"

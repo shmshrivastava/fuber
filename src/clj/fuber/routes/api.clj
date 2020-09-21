@@ -18,12 +18,17 @@
    ["/api"
     ["/cabs" {:get {:coercion reitit.coercion.schema/coercion
                     :summary "Get a list of all cabs"
-                    :handler (fn [_] (ok (cabs/get-cabs)))}
+                    :parameters {:query {(s/optional-key :status) (s/enum "available" "assigned")}}
+                    :handler (fn [{{{:keys [status]} :query}
+                                   :parameters}]
+                               (let [query (merge {}
+                                                  (when status {:status status}))]
+                                 (ok (cabs/get-cabs query))))}
               :post {:coercion reitit.coercion.schema/coercion
                      :summary "Add a new cab"
                      :parameters {:body {:lat s/Num
                                          :long s/Num
-                                         (s/optional-key :cab) (s/enum "standard" "pink")
+                                         (s/optional-key :type) (s/enum "standard" "pink")
                                          (s/optional-key :status) (s/enum "available")}}
                      :handler (fn [{{cab :body} :parameters}]
                                 (let [cab (cabs/add-cab cab)]

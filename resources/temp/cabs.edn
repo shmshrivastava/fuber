@@ -1,1 +1,1 @@
-{"1600695262584" {:lat 0, :long 0, :cab "standard", :status "available", :id "1600695262584"}, "1600695552436" {:lat 1, :long 0, :cab "standard", :status "available", :id "1600695552436"}}
+{"1600695262584" {:lat 0, :long 0, :type "standard", :status "available", :id "1600695262584"}, "1600695552436" {:lat 1, :long 0, :type "pink", :status "available", :id "1600695552436"}}

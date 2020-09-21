@@ -1,6 +1,76 @@
-{% extends "base.html" %}
-{% block content %}
-  <div class="content">
-  {{docs|markdown}}
-  </div>
-{% endblock %}
+<html>
+  <head>
+    <title>Fuber App</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <style>
+      body {
+        font-family: 'Roboto', monospace;
+      }
+
+      a {
+        text-decoration: none;
+        padding: 20px;
+        display: inline-block;
+        box-shadow: 0px 0px 2px 0px #888;
+        background-color: ghostwhite;
+      }
+
+      #cabs {
+        list-style: none;
+        padding: 0 10px;
+        width: max-content;
+      }
+      li.cab-item {
+        padding: 5px 10px;
+        box-shadow: 2px 2px 4px 0px #888;
+        margin: 12px 0;
+        background-color: ghostwhite;
+      }
+
+      li.cab-item.pink {
+        background-color: lightpink;
+      }
+
+      .cab-footer-info {
+        margin: 0 4px;
+      }
+
+    </style>
+    <script>
+      function populateCabs(cabs){
+        let container = document.getElementById("cabs");
+        let cabsContent = "";
+        for(let i = 0; i < cabs.length; i++){
+          cabsContent += `
+              <li class="cab-item ${cabs[i].type}">
+                <div class="cab-item-header">
+                  <p class="cab-id">${cabs[i].id}</p>
+                </div>
+                <div class="cab-item-footer">
+                  <span class="cab-footer-info">Lat: ${cabs[i].lat}</span>
+                  <span class="cab-footer-info">Lat: ${cabs[i].lat}</span>
+                  <span class="cab-footer-info">Type: ${cabs[i].type}</span>
+                  <span class="cab-footer-info">Status: ${cabs[i].status}</span>
+                </div>
+              </li>
+              `
+        }
+        container.innerHTML = cabsContent;
+      }
+      fetch("/api/cabs?status=available")
+      .then(response => response.json())
+      .then(data => populateCabs(data))
+    </script>
+  </head>
+  <body>
+    <h1>Welcome to Fuber App</h1>
+    <hr/>
+    <a href="/swagger-ui" target="_blank">
+      Swagger Documentation
+    </a>
+    <h2>Cars Available</h2>
+    <ul id="cabs">
+      
+    </ul>
+  </body>
+</html>
