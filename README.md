@@ -2,6 +2,10 @@
 
 This project is generated using [Luminus](https://luminusweb.com/) version "3.85"
 
+## Live app
+
+This app is deployed on heroku and is live at https://fuber-shm.herokuapp.com/
+
 ## About
 
 This is a clojure based web application for managing cabs and rides.
@@ -19,6 +23,10 @@ To start a web server for the application, run:
     lein run 
 
 This will run the server at port 3000.
+
+## Database
+
+Edn files are used as temporary data storage.
 
 ## API Endpoints
 
